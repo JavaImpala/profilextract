@@ -167,7 +167,7 @@ public class TesseractOCRAnalyzer {
 
 		LOGGER.info("Analyzing image file {} with language {} for hocr...", imagePath, language);
 		
-		StringBuilder hocrString=new StringBuilder();
+		String hocrString="";
 		
 		try (TessBaseAPI api = new TessBaseAPI();) {
 		    int returnCode = api.Init(tessDataDirectory, language);
@@ -184,22 +184,20 @@ public class TesseractOCRAnalyzer {
 		    LOGGER.info("The image has a width of {} and height of {}", image.w(), image.h());
 	
 		    api.SetImage(image);
-		    api.SetPageSegMode(6);
+		    api.SetPageSegMode(1);
 		  
 		    
 		    BytePointer result = api.GetHOCRText(0);
-		    System.out.println("bytepointerHOCR "+result.getString());
+		    hocrString=result.getString();
 		    result.deallocate();
 		    
-		   
-	
 		   
 		    api.End();
 		    api.close();
 		    pixDestroy(image);
 		}
 	
-		return "";
+		return hocrString;
 
     }
     
@@ -207,7 +205,7 @@ public class TesseractOCRAnalyzer {
 
 		LOGGER.info("Analyzing image file {} with language {} for hocr...", imagePath, language);
 		
-		StringBuilder hocrString=new StringBuilder();
+		String returnString="";
 		
 		try (TessBaseAPI api = new TessBaseAPI();) {
 		    int returnCode = api.Init(tessDataDirectory, language);
@@ -215,10 +213,6 @@ public class TesseractOCRAnalyzer {
 		    if (returnCode != 0) {
 		    	throw new RuntimeException("could not initialize tesseract, error code: " + returnCode);
 		    }
-		    
-		    
-		   
-		    
 		    
 		    PIX image = pixRead(imagePath.toFile().getAbsolutePath());
 	
@@ -228,7 +222,7 @@ public class TesseractOCRAnalyzer {
 		    api.SetPageSegMode(psm);
 		  
 		    BytePointer result = api.GetUTF8Text();
-		    System.out.println("free text "+result.getString());
+		    returnString=result.getString();
 		    result.deallocate();
 		    
 		    api.End();
@@ -236,8 +230,7 @@ public class TesseractOCRAnalyzer {
 		    pixDestroy(image);
 		}
 	
-		return "";
-
+		return returnString;
     }
 
 }

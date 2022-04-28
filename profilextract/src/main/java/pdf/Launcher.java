@@ -2,6 +2,7 @@ package pdf;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
 
@@ -35,10 +36,25 @@ public class Launcher {
     	        
     	        File pageImgFile = new File(dirName+"/page"+page);
     	        
-    	        ImageIO.write(
-    	          bim, "png",pageImgFile);
+    	        ImageIO.write(bim, "png",pageImgFile);
     	        
-    	        TesseractJavaDemo.extractHOCR("nor",pageImgFile.toPath());
+    	        /*
+    	         * tesseract
+    	         */
+    	        
+    	        try (PrintWriter out = new PrintWriter(dirName+"/page"+page+"horc.hocr")) {
+    	            out.println( TesseractJavaDemo.extractHOCR("nor",pageImgFile.toPath()));
+    	        }
+    	        
+    	        try (PrintWriter out = new PrintWriter(dirName+"/page"+page+"ocr6.txt")) {
+    	            out.println( TesseractJavaDemo.extractText("nor",pageImgFile.toPath(),6));
+    	        }
+    	        
+    	        try (PrintWriter out = new PrintWriter(dirName+"/page"+page+"ocr1.txt")) {
+    	            out.println( TesseractJavaDemo.extractText("nor",pageImgFile.toPath(),1));
+    	        }
+    	        
+    	       
     	    }
     	    document.close();
 

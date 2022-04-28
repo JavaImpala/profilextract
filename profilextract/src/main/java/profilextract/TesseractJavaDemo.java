@@ -31,12 +31,20 @@ public class TesseractJavaDemo {
 		lines.forEach(line -> LOGGER.info("line: {}", line));
     }
 
-	public static void extractHOCR(String language, Path imageFile) {
+	public static String extractHOCR(String language, Path imageFile) {
 		TesseractOCRAnalyzer analyser = new TesseractOCRAnalyzer(TESSDATA_DIR, imageFile, language);
 		// detect words
 		
-		analyser.extractHOCRFromImage();
-		analyser.extractTextFromImage(6);
+		return analyser.extractHOCRFromImage();
+		
+	}
+	
+	public static String extractText(String language, Path imageFile,int psm) {
+		TesseractOCRAnalyzer analyser = new TesseractOCRAnalyzer(TESSDATA_DIR, imageFile, language);
+		// detect words
+		
+		
+		return analyser.extractTextFromImage(psm);
 		
 	}
 
