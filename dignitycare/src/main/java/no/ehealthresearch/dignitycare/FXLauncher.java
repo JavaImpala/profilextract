@@ -35,7 +35,7 @@ public class FXLauncher extends Application {//ekstendere Application for at Str
 	}
 	
 	public void appendText(String str) {
-		 Platform.runLater(() -> textField.appendText(str));
+		Platform.runLater(() -> textField.appendText(str));
 	}
 	
 	@Override
@@ -44,6 +44,16 @@ public class FXLauncher extends Application {//ekstendere Application for at Str
 	        @Override
 	        public void write(int b) throws IOException {
 	            appendText(String.valueOf((char) b));
+	        }
+	        
+	        @Override
+	        public void write(byte[] b, int off, int len) throws IOException {
+	        	appendText(new String(b, off, len));
+	        }
+	        
+	        @Override
+	        public void write(byte[] b) throws IOException {
+	        	write(b, 0, b.length);
 	        }
 	    };
 	    
@@ -141,7 +151,13 @@ public class FXLauncher extends Application {//ekstendere Application for at Str
 		
 		try {
 			
-			ImageToText.extract(path);
+			ImageToText.extract(
+					path,
+					()->{
+						System.out.println("");
+						System.out.println("=>FERDIG med OCR");
+						System.out.println("");
+					});
 			
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -152,7 +168,7 @@ public class FXLauncher extends Application {//ekstendere Application for at Str
 	
 	@Override 
 	public void stop() {
-		
+		GlobalShutdown.INSTANCE.shutDown();
 	}
 }
 

@@ -7,9 +7,10 @@ package no.ehealthresearch.dignitycare;
  */
 
 public class App {
+	
 	public static void main(String[] args) {
-		
-		System.setProperty("prism.lcdtext", "true");
+		nu.pattern.OpenCV.loadLocally();
+		//System.loadLibrary(org.opencv.core.Core.NATIVE_LIBRARY_NAME);
 		
 		FXLauncher.main(args);
 		//MedRecFromDB.main(args);

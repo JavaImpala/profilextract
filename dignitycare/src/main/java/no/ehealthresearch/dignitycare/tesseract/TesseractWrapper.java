@@ -11,8 +11,6 @@ import org.bytedeco.tesseract.TessBaseAPI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import no.ehealthresearch.dignitycare.FXLauncher;
-
 /**
  * ikke threadsafe!
  * 
@@ -23,31 +21,25 @@ import no.ehealthresearch.dignitycare.FXLauncher;
 public class TesseractWrapper implements AutoCloseable{
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TesseractWrapper.class);
-
     
-    private static final String TESSDATA_DIR = FXLauncher.class.getResource("/data").getPath();
+    
+    
     private static final String LANG = "nor";
-    
     private TessBaseAPI api;
     
-   
-    
     public TesseractWrapper() {
-    	LOGGER.info("TessBaseAPI init fint datadir:"+TESSDATA_DIR+" and lang:"+LANG);
     	
     	api=new TessBaseAPI();
     	
-    	int returnCode = api.Init(TESSDATA_DIR, LANG);
+    	int returnCode = api.Init(TessDataDir.INSTANCE.dir(), LANG);
     	
     	if (returnCode != 0) {
 			throw new RuntimeException("could not initialize tesseract, error code: " + returnCode);
-		 }
+		}
     }
 
     public String extractHOCRFromImage(Path imagePath) {
 
-		
-		
 		String hocrString="";
 		
 	    PIX image = pixRead(imagePath.toFile().getAbsolutePath());
@@ -65,7 +57,6 @@ public class TesseractWrapper implements AutoCloseable{
 	    pixDestroy(image);
 		
 		return hocrString;
-
     }
     
     public String extractTextFromImage(Path imagePath,int psm) {
@@ -85,10 +76,8 @@ public class TesseractWrapper implements AutoCloseable{
 	    returnString=result.getString();
 	    result.deallocate();
 	    
-	   
 	    pixDestroy(image);
 		
-	
 		return returnString;
     }
 

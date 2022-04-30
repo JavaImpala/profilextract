@@ -9,6 +9,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import javafx.concurrent.Task;
+import no.ehealthresearch.dignitycare.GlobalShutdown;
 
 /**
  * diligent grunt tar kun en tråd om gangen!
@@ -31,7 +32,7 @@ public class SimpleDiligentGrunt implements DiligentGrunt{
 	}
 	
 	private void processTask() {
-		if(!working && !tasks.isEmpty()) {
+		if(!working && !tasks.isEmpty() && !GlobalShutdown.INSTANCE.isShutDown()) {
 			executor.submit(tasks.pop().get());
 		}
 	}
