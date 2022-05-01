@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
+import org.apache.commons.lang3.mutable.MutableInt;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -20,6 +22,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
+import no.ehealthresearch.dignitycare.fastlege.GPToFHIR;
+import no.ehealthresearch.dignitycare.opencv.ImageAnalyzer;
+import no.ehealthresearch.dignitycare.pdf.SplitPDFIntoImages;
 import no.ehealthresearch.dignitycare.tesseract.ImageToText;
 
 public class FXLauncher extends Application {//ekstendere Application for at String args skal defineres, har noe med JavaFX å gjøre?	
@@ -35,6 +40,7 @@ public class FXLauncher extends Application {//ekstendere Application for at Str
 	}
 	
 	public void appendText(String str) {
+		
 		Platform.runLater(() -> textField.appendText(str));
 	}
 	
@@ -58,7 +64,7 @@ public class FXLauncher extends Application {//ekstendere Application for at Str
 	    };
 	    
 	    System.setOut(new PrintStream(out, true));
-	    System.setErr(new PrintStream(out, true));
+	    //System.setErr(new PrintStream(out, true));
 	}
 
 	@Override
@@ -91,6 +97,8 @@ public class FXLauncher extends Application {//ekstendere Application for at Str
 		Label selectFileLegend=new Label("Velg pasient:");
 		selectFileLegend.setMinWidth(120);
 		
+		Button submit=new Button("Analyser fil");
+		
 		selectFile.setOnMouseClicked(m->{
 			FileChooser fileChooser = new FileChooser();
 			//fileChooser.setInitialDirectory(new File("src/main/resources/"));
@@ -105,7 +113,7 @@ public class FXLauncher extends Application {//ekstendere Application for at Str
 			
 			if (selectedFile != null) {
 				pathContainer.textProperty().set(selectedFile.getAbsolutePath().toString());
-				
+				submit.setDisable(false);
 			}
 		});
 		
@@ -122,7 +130,9 @@ public class FXLauncher extends Application {//ekstendere Application for at Str
 		
 		
 		
-		Button submit=new Button("Analyser fil");
+		
+		
+		submit.setDisable(true);
 		
 		submit.setOnMouseClicked(m->{
 			submit.setDisable(true);
@@ -150,17 +160,59 @@ public class FXLauncher extends Application {//ekstendere Application for at Str
 	private void launch(String path) {
 		
 		try {
-			
-			ImageToText.extract(
-					path,
-					()->{
-						System.out.println("");
-						System.out.println("=>FERDIG med OCR");
-						System.out.println("");
-					});
+			File file=new File(path);
+			String dirName=file.getParent()+"/"+file.getName()+"-extract";
+	    	
+    	    new File(dirName).mkdirs();
+    	    
+    	    ImageAnalyzer imageAnalyzer=new ImageAnalyzer();
+    	    ImageToText imageToText=new ImageToText();
+    	    
+    	    MutableInt imageCount=new MutableInt(Integer.MAX_VALUE);
+    	    MutableInt imageProcCount=new MutableInt(0);
+    	    
+    	    Runnable getFHIR=()->{
+    	    	GPToFHIR.extract(dirName);
+    	    };
+    	    
+    	    SplitPDFIntoImages.extract(
+    	    		path,
+    	    		dirName, 
+    	    		p->{
+    	    			imageAnalyzer.analyzeImage(
+	    					p,
+	    					w->{
+	    						imageToText.extract(
+	    								w,
+	    								()->{
+	    									System.out.println("ferdig å analysere "+imageProcCount.incrementAndGet()+"/"+imageCount.getValue());
+	    									
+	    									if(imageProcCount.getValue()>=imageCount.getValue()) {
+	    										System.out.println();
+	    										System.out.println("FERDIG Å ANALYSERE BILDER ");
+	    										System.out.println();
+	    										
+	    										getFHIR.run();
+	    									}
+	    								});
+	    					});
+    	    			
+    	    			
+    	    		},
+    	    		i->{
+    	    			imageCount.setValue(i);
+    	    			
+    	    			if(imageProcCount.getValue()>=imageCount.getValue()) {
+							System.out.println();
+							System.out.println("FERDIG Å ANALYSERE BILDER ");
+							System.out.println();
+							
+							getFHIR.run();
+						}
+    	    		});
 			
 		}catch(Exception e) {
-			e.printStackTrace();
+			e.printStackTrace(System.out);
 			return;
 		}
 		
@@ -169,6 +221,16 @@ public class FXLauncher extends Application {//ekstendere Application for at Str
 	@Override 
 	public void stop() {
 		GlobalShutdown.INSTANCE.shutDown();
+		
+		new Thread(()->{
+			try {
+				//program får 5 sek på å avslutte pyntelig. Deretter er det ingen nåde.
+	            Thread.sleep(5000);
+	            System.exit(0);
+	         } catch (Exception e) {
+	            System.out.println(e);
+	         }
+		}).start();	
 	}
 }
 

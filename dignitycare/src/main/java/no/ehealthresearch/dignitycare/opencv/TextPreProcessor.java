@@ -29,7 +29,7 @@ public class TextPreProcessor {
 		
 	}
 	
-    public void proccess(String path) {
+    public String proccess(String path) {
         // Load the image
         List<Mat> mats=new ArrayList<>();
     	
@@ -112,11 +112,11 @@ public class TextPreProcessor {
         
         //showWaitDestroy("result",threshold);
         
-        System.out.println("saving "+path.substring(0, path.lastIndexOf('.'))+"-proc.tif");
-        
-        Imgcodecs.imwrite(path.substring(0, path.lastIndexOf('.'))+"-proc.tif", threshold);
+        Imgcodecs.imwrite(path.substring(0, path.lastIndexOf('.'))+"-proc.tiff", threshold);
         
         mats.forEach(m->m.release());
+        
+        return path.substring(0, path.lastIndexOf('.'))+"-proc.tiff";
     }
     
     private  List<Rect> findAndPaintHorisontal(Mat kernel,Mat bwSource,Mat canvas) {
@@ -174,8 +174,8 @@ public class TextPreProcessor {
     private List<Rect> findAndPaintVertical(Mat kernel,Mat bwSource,Mat canvas,List<Rect> rects) {
     	
         // Specify size on horizontal axis
-    	 List<Mat> mats=new ArrayList<>();
-    	System.out.println(rects.size());
+    	List<Mat> mats=new ArrayList<>();
+    	System.out.println("finner "+rects.size()+" firkanter");
         
         // Create structure element for extracting horizontal lines through morphology operations
     	Mat bw = bwSource.clone();

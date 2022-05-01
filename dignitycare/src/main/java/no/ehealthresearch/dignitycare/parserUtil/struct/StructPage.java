@@ -88,8 +88,6 @@ public class StructPage {
 							continue;
 						}
 						
-						//System.out.println(word);
-						
 						List<String> wordTitleAttr=Arrays.asList(word.attr("title").split(";"));
 						List<String> wordBounds = RegexTools.getMatches(wordTitleAttr.get(0).trim(),"(\\d+)");
 						
@@ -98,7 +96,9 @@ public class StructPage {
 						double x=Double.valueOf(wordBounds.get(0));
 						double width=Double.valueOf(wordBounds.get(2))-x;
 						
-						double fontSize=Double.valueOf(RegexTools.getMatches(word.attr("title"),"(?<=x_fsize\\s)(\\d+)").get(0).trim());
+						//double fontSize=Double.valueOf(RegexTools.getMatches(word.attr("title"),"(?<=x_size\\s)(\\d+)").get(0).trim());
+						
+						double fontSize=14;
 						
 						TextLineWord textLineWord=TextLineWord.create(
 								x,

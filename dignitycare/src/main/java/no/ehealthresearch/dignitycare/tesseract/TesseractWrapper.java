@@ -38,34 +38,33 @@ public class TesseractWrapper implements AutoCloseable{
 		}
     }
 
-    public String extractHOCRFromImage(Path imagePath) {
+    public String extractHOCRFromImage(String path) {
 
 		String hocrString="";
 		
-	    PIX image = pixRead(imagePath.toFile().getAbsolutePath());
+	    PIX image = pixRead(path);
 
 	    LOGGER.info("The image has a width of {} and height of {}", image.w(), image.h());
 
 	    api.SetImage(image);
 	    api.SetPageSegMode(1);
-	  
 	    
 	    BytePointer result = api.GetHOCRText(0);
 	    hocrString=result.getString();
+	   
 	    result.deallocate();
-	    
 	    pixDestroy(image);
 		
 		return hocrString;
     }
     
-    public String extractTextFromImage(Path imagePath,int psm) {
+    public String extractTextFromImage(String imagePath,int psm) {
 
 		LOGGER.info("Analyzing image file {"+imagePath.toString()+"} with language {} for psm:"+psm);
 		
 		String returnString="";
 		
-	    PIX image = pixRead(imagePath.toFile().getAbsolutePath());
+	    PIX image = pixRead(imagePath);
 
 	    LOGGER.info("The image has a width of {} and height of {}", image.w(), image.h());
 
