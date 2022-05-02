@@ -33,6 +33,8 @@ public class TesseractWrapper implements AutoCloseable{
     	
     	int returnCode = api.Init(TessDataDir.INSTANCE.dir(), LANG);
     	
+    	api.SetVariable("hocr_font_info","1");
+    	
     	if (returnCode != 0) {
 			throw new RuntimeException("could not initialize tesseract, error code: " + returnCode);
 		}
