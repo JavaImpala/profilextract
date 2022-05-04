@@ -65,6 +65,8 @@ public class SimpleDiligentGrunt implements DiligentGrunt{
 			});
 			
 			task.setOnFailed(h->{
+				task.getException().printStackTrace(System.out);
+				
 				ticket.getListener().accept(Optional.empty());
 				reload();
 			});
