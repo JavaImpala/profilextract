@@ -1,4 +1,4 @@
-package no.ehealthresearch.dignitycare;
+package no.ehealthresearch.dignitycare.fastlege;
 
 
 /**

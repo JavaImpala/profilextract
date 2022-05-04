@@ -1,4 +1,4 @@
-package no.ehealthresearch.dignitycare;
+package no.ehealthresearch.dignitycare.fastlege;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +22,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
-import no.ehealthresearch.dignitycare.fastlege.GPToFHIR;
+import no.ehealthresearch.dignitycare.GlobalShutdown;
 import no.ehealthresearch.dignitycare.opencv.ImageAnalyzer;
 import no.ehealthresearch.dignitycare.pdf.SplitPDFIntoImages;
 import no.ehealthresearch.dignitycare.tesseract.ImageToText;

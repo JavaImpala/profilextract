@@ -3,7 +3,8 @@ package no.ehealthresearch.dignitycare.tesseract;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
-import no.ehealthresearch.dignitycare.FXLauncher;
+import no.ehealthresearch.dignitycare.GlobalShutdown;
+import no.ehealthresearch.dignitycare.fastlege.FXLauncher;
 
 public enum TessDataDir {
 	INSTANCE;
@@ -17,7 +18,7 @@ public enum TessDataDir {
 		try {
 			String relPath="/data";
 			
-			System.out.println("leter etter resource i "+relPath+" kommer til "+URLDecoder.decode(FXLauncher.class.getResource(relPath).getPath(),System.getProperty("file.encoding"))+" ved encoding: "+System.getProperty("file.encoding"));
+			System.out.println("leter etter resource i "+relPath+" kommer til "+URLDecoder.decode(GlobalShutdown.class.getResource(relPath).getPath(),System.getProperty("file.encoding"))+" ved encoding: "+System.getProperty("file.encoding"));
 			
 			dirPlaceholder=URLDecoder.decode(FXLauncher.class.getResource(relPath).getPath(),System.getProperty("file.encoding"));
 		} catch (UnsupportedEncodingException e) {
