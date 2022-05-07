@@ -8,9 +8,8 @@
   <artifactId>dignitycare</artifactId>
   <version>0.0.1-SNAPSHOT</version>
 
-  <name>dignitycare</name>
-  <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
+  <url>http://www.ehealthresearch.no</url>
+  <packaging>jar</packaging>
 
 
   <properties>
@@ -28,9 +27,6 @@
     <launcherName>tess_analyzer</launcherName>
     <appName>tess_analyzer</appName>
     
-    <windows.upgrade.uuid>bc25f2e3-4b1c-4d76-968e-48a57c001274</windows.upgrade.uuid>
-    
-    <jvm.modules>java.base,java.sql,java.xml,java.logging,java.management,java.desktop,java.naming,jdk.unsupported</jvm.modules>
     
     <slf4j.version>1.7.32</slf4j.version>
   </properties>
@@ -131,41 +127,10 @@
             <artifactId>maven-compiler-plugin</artifactId>
             <version>3.8.1</version>
             <configuration>
+            	
               	<source>${maven.compiler.source}</source>
    				<target>${maven.compiler.target}</target>
-        		<compilerArgs>
-          			<option>--add-exports</option>
-		       		<option>javafx.graphics/com.sun.javafx.tk=ALL-UNNAMED</option>
-	       			
-	      			<option>--add-exports</option>
-	      			<option>javafx.graphics/com.sun.javafx.geom=ALL-UNNAMED</option>
-	      			
-	      			<option>--add-exports</option>
-	      			<option>javafx.graphics/com.sun.javafx.scene.text=ALL-UNNAMED</option>
-	      			
-	      			<option>--add-exports</option>
-	      			<option>javafx.graphics/com.sun.javafx.font=ALL-UNNAMED</option>
-	      			
-	      			<option>--add-exports</option>
-	      			<option>javafx.graphics/com.sun.javafx.geom.transform=ALL-UNNAMED</option>
-	      			
-	      			<option>--add-exports</option>
-	      			<option>javafx.graphics/com.sun.javafx.scene=ALL-UNNAMED</option>
-	      			
-	      			<option>--add-exports</option>
-	      			<option>javafx.graphics/com.sun.javafx.scene.shape=ALL-UNNAMED</option>
-	      			
-	      			<option>--add-exports</option>
-	      			<option>javafx.graphics/com.sun.javafx.sg.prism=ALL-UNNAMED</option>
-	      			
-	      			<option>--add-exports</option>
-	      			<option>javafx.graphics/com.sun.javafx.util=ALL-UNNAMED</option>
-        		</compilerArgs>
       		</configuration>
-        </plugin>
-        <plugin>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.22.1</version>
         </plugin>
         	<plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -195,7 +160,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.2.2</version>
                 <configuration>
-                   
+                   	<outputDirectory>${project.build.directory}/${dependency.loc}</outputDirectory>
                     <archive>
 			          <manifest>
 			            <addClasspath>true</addClasspath>
@@ -227,36 +192,8 @@
             <version>0.0.5</version>
             <configuration>
                 <mainClass>${main-class}</mainClass>
-                <options>
-           
-		           	<option>--add-exports</option>
-		       		<option>javafx.graphics/com.sun.javafx.tk=ALL-UNNAMED</option>
-	       			
-	      			<option>--add-exports</option>
-	      			<option>javafx.graphics/com.sun.javafx.geom=ALL-UNNAMED</option>
-	      			
-	      			<option>--add-exports</option>
-	      			<option>javafx.graphics/com.sun.javafx.scene.text=ALL-UNNAMED</option>
-	      			
-	      			<option>--add-exports</option>
-	      			<option>javafx.graphics/com.sun.javafx.font=ALL-UNNAMED</option>
-	      			
-	      			<option>--add-exports</option>
-	      			<option>javafx.graphics/com.sun.javafx.geom.transform=ALL-UNNAMED</option>
-	      			
-	      			<option>--add-exports</option>
-	      			<option>javafx.graphics/com.sun.javafx.scene=ALL-UNNAMED</option>
-	      			
-	      			<option>--add-exports</option>
-	      			<option>javafx.graphics/com.sun.javafx.scene.shape=ALL-UNNAMED</option>
-	      			
-	      			<option>--add-exports</option>
-	      			<option>javafx.graphics/com.sun.javafx.sg.prism=ALL-UNNAMED</option>
-	      			
-	      			<option>--add-exports</option>
-	      			<option>javafx.graphics/com.sun.javafx.util=ALL-UNNAMED</option>
-           
-      			</options>
+                
+                
             </configuration>
         </plugin>
       </plugins>
