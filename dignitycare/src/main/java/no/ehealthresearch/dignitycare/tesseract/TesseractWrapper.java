@@ -3,13 +3,11 @@ package no.ehealthresearch.dignitycare.tesseract;
 import static org.bytedeco.leptonica.global.lept.pixDestroy;
 import static org.bytedeco.leptonica.global.lept.pixRead;
 
-import java.nio.file.Path;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bytedeco.javacpp.BytePointer;
 import org.bytedeco.leptonica.PIX;
 import org.bytedeco.tesseract.TessBaseAPI;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * ikke threadsafe!
@@ -20,7 +18,7 @@ import org.slf4j.LoggerFactory;
 
 public class TesseractWrapper implements AutoCloseable{
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TesseractWrapper.class);
+    private static final Logger LOGGER = LogManager.getLogger(TesseractWrapper.class);
     
     
     

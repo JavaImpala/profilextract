@@ -35,5 +35,4 @@ module dignitycare {
 	requires org.bytedeco.tesseract;
 	requires org.hl7.fhir.r4;
 	requires pdfbox;
-	requires slf4j.api;
 }

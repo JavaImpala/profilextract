@@ -12,8 +12,8 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.apache.commons.lang3.mutable.MutableObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import no.ehealthresearch.dignitycare.parserUtil.pageProcessor.Page;
 import no.ehealthresearch.dignitycare.parserUtil.pageProcessor.PageParserManager;
@@ -23,7 +23,7 @@ import no.ehealthresearch.dignitycare.tesseract.ImageToText;
 
 
 public class GPToFHIR {
-	private static final Logger log = LoggerFactory.getLogger(ImageToText.class);
+	private static final Logger log = LogManager.getLogger(ImageToText.class);
 	private static final String pagePrefix="";
 	
 	public static void extract(String location) {
